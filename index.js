@@ -133,10 +133,10 @@ app.post('/events', verifyWebhookSecret, async (req, res) => {
     }
 
     // Process the event based on type
-    await processWebhookEvent(uuid, type, timestamp, payload, res);
+    const result = await processWebhookEvent(uuid, type, timestamp, payload, res);
 
     // Send acknowledgment response
-    res.status(200).json({
+    res.status(200).json(result || {
       success: true,
       message: 'Event processed successfully',
       eventId: uuid,
@@ -161,11 +161,11 @@ app.post('/events', verifyWebhookSecret, async (req, res) => {
  * @param {string} timestamp - Event timestamp
  * @param {Object} payload - Event payload data
  */
-async function processWebhookEvent(uuid, type, timestamp, payload, res) {
+async function processWebhookEvent(uuid, type, timestamp, payload) {
   try {
     switch (type) {
       case 'call_initiated':
-        await handleCallInitiated(uuid, payload, res);
+        return await handleCallInitiated(uuid, payload);
         break;
 
       case 'call_started':
@@ -222,9 +222,9 @@ async function handleCallInitiated(uuid, payload, res) {
   // await notificationService.send('call_initiated', { uuid, payload });
 
   // Example: Return STS URL with custom parameters
-  return res.json({
-    sts_url: `ws://localhost:6030?uuid=${uuid}&my_custom_param=my_custom_value`,
-  });
+  return {
+    sts_url: `ws://avr-sts-ultravox:6031?uuid=${uuid}&my_custom_param=my_custom_value`,
+  };
 }
 
 /**
