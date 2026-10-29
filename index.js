@@ -209,21 +209,10 @@ async function processWebhookEvent(uuid, type, timestamp, payload) {
 async function handleCallInitiated(uuid, payload, res) {
   console.log(`[CALL_INITIATED] Call initiated - UUID: ${uuid}`);
 
-  // Example: Store call information in database
-  // await database.calls.create({
-  //   uuid,
-  //   startTime: new Date(),
-  //   callerId: payload?.callerId,
-  //   destination: payload?.destination,
-  //   status: 'active'
-  // });
+  console.log(payload);
 
-  // Example: Send notification to monitoring system
-  // await notificationService.send('call_initiated', { uuid, payload });
-
-  // Example: Return STS URL with custom parameters
   return {
-    sts_url: `ws://avr-sts-ultravox:6031?uuid=${uuid}&my_custom_param=my_custom_value`,
+    sts_url: `ws://host.docker.internal:6032?uuid=${uuid}&agent=${payload.to}`,
   };
 }
 
