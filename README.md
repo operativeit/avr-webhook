@@ -108,6 +108,7 @@ Main endpoint for receiving webhook events from AVR Core.
 | `ALLOWED_ORIGINS` | CORS allowed origins | `*` |
 | `RATE_LIMIT_MAX` | Max requests per IP per 15min | `100` |
 | `WEBHOOK_SECRET` | Webhook signature secret | - |
+| `STS_URL` | Base STS URL returned on `call_initiated` (`uuid` and `agent` query params are appended) | `ws://host.docker.internal:6032` |
 
 ### Security Features
 

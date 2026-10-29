@@ -211,8 +211,13 @@ async function handleCallInitiated(uuid, payload, res) {
 
   console.log(payload);
 
+  // Base STS URL is configurable via STS_URL, uuid and agent are appended as query params
+  const stsUrl = new URL(process.env.STS_URL || 'ws://host.docker.internal:6032');
+  stsUrl.searchParams.set('uuid', uuid);
+  stsUrl.searchParams.set('agent', payload?.to);
+
   return {
-    sts_url: `ws://host.docker.internal:6032?uuid=${uuid}&agent=${payload.to}`,
+    sts_url: stsUrl.toString(),
   };
 }
 
